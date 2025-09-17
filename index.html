@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Elegant Black Clock</title>
+		<style>
+			body {
+				background: #000;
+				color: #fff;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+				font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+			}
+			.container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 2em;
+				background: rgba(20,20,20,0.95);
+				padding: 2.5em 3em;
+				border-radius: 1.5em;
+				box-shadow: 0 8px 48px #000a, 0 1.5px 0 #222 inset;
+				min-width: 400px;
+			}
+			.date {
+				font-size: 1.5em;
+				letter-spacing: 0.03em;
+				margin-bottom: 0.5em;
+				color: #bbb;
+				text-shadow: 0 1px 0 #222;
+			}
+			.clock {
+				font-size: 5em;
+				letter-spacing: 0.08em;
+				background: linear-gradient(90deg, #111 60%, #222 100%);
+				padding: 0.5em 1.2em;
+				border-radius: 0.7em;
+				box-shadow: 0 0 40px #000a, 0 1px 0 #222 inset;
+				user-select: none;
+				font-weight: 600;
+				text-shadow: 0 2px 8px #000a;
+			}
+			.labels {
+				margin-top: 2em;
+				text-align: center;
+				width: 100%;
+			}
+			.label-row {
+				font-size: 1.3em;
+				margin-bottom: 0.5em;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 0.7em;
+				color: #888;
+			}
+			.label-row span {
+				font-weight: bold;
+				color: #fff;
+				background: #222;
+				padding: 0.1em 0.5em;
+				border-radius: 0.4em;
+				box-shadow: 0 1px 0 #333 inset;
+			}
+			#chat-timer {
+				font-size: 2.2em;
+				margin-top: 1.2em;
+				color: #fff;
+				transition: color 0.3s, background 0.3s;
+				background: #222;
+				padding: 0.3em 1em;
+				border-radius: 0.5em;
+				box-shadow: 0 2px 12px #000a;
+				font-weight: 500;
+				letter-spacing: 0.04em;
+				min-width: 120px;
+				display: inline-block;
+			}
+			#chat-timer.green {
+				color: #0f0;
+				background: #111e11;
+				box-shadow: 0 0 24px #0f04;
+			}
+			#chat-timer.red {
+				color: #f00;
+				background: #2a1111;
+				box-shadow: 0 0 24px #f004;
+			}
+			.clock.red {
+				color: #ff4d4d;
+				background: linear-gradient(90deg, #3a0f0f 0%, #220808 100%);
+				box-shadow: 0 0 40px #f004, 0 1px 0 #330000 inset;
+			}
+		</style>
+</head>
+<body>
+			<div class="container">
+				<div class="date" id="date"></div>
+				<div class="clock" id="clock"></div>
+				<div id="chat-timer">Timer</div>
+				<div class="labels">
+					<div class="label-row">CHAT OFF <span>10:00pm</span></div>
+					<div class="label-row">CHAT ON <span>11:00pm</span></div>
+				</div>
+			</div>
+		<script>
+				function updateClock() {
+					const now = new Date();
+					const h = String(now.getHours()).padStart(2, '0');
+					const m = String(now.getMinutes()).padStart(2, '0');
+					const s = String(now.getSeconds()).padStart(2, '0');
+					document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+					// Date display
+					const dateStr = now.toLocaleDateString(undefined, {
+						weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+					});
+					document.getElementById('date').textContent = dateStr;
+				}
+
+				// Chat timer logic
+				let chatOnTriggered = false;
+				let greenTimeout = null;
+
+				function updateChatTimer() {
+					const chatTimer = document.getElementById('chat-timer');
+					if (!chatTimer) return; // nothing to do if element missing
+					const now = new Date();
+					const clockEl = document.getElementById('clock');
+					const h = now.getHours();
+					const m = now.getMinutes();
+					const s = now.getSeconds();
+					const weekday = now.getDay(); // 0=Sun,1=Mon,...,3=Wed,5=Fri
+					const isChatOffDay = (weekday === 3 || weekday === 5); // Wed or Fri
+					// 22:00 = 10pm, 23:00 = 11pm
+					if (h === 22 && isChatOffDay) {
+						// apply red to both chat timer and main clock when chat is off on selected days
+						chatTimer.classList.remove('green');
+						chatTimer.classList.add('red');
+						chatTimer.textContent = 'CHAT OFF';
+						if (clockEl) {
+							clockEl.classList.add('red');
+						}
+					} else if (h === 23 && m === 0 && s === 0 && !chatOnTriggered) {
+						chatOnTriggered = true;
+						chatTimer.classList.remove('red');
+						chatTimer.classList.add('green');
+						chatTimer.textContent = 'CHAT ON!';
+						greenTimeout = setTimeout(() => {
+							chatTimer.classList.remove('green');
+							chatTimer.textContent = 'Timer';
+						}, 10000);
+					} else if (h === 23 && m === 0 && s > 0 && chatOnTriggered && s <= 9) {
+						chatTimer.textContent = `Timer: ${10 - s}s`;
+					} else if (h === 23 && m === 0 && s > 9) {
+						chatTimer.classList.remove('green');
+						chatTimer.textContent = 'Timer';
+					} else {
+						chatOnTriggered = false;
+						if (greenTimeout) clearTimeout(greenTimeout);
+						chatTimer.classList.remove('green');
+						chatTimer.classList.remove('red');
+						chatTimer.textContent = 'Timer';
+						if (clockEl) {
+							clockEl.classList.remove('red');
+						}
+					}
+				}
+
+				setInterval(() => {
+					updateClock();
+					updateChatTimer();
+				}, 1000);
+				updateClock();
+				updateChatTimer();
+		</script>
+</body>
+</html>
