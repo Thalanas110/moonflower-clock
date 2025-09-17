@@ -25,10 +25,11 @@
 				flex-direction: column;
 				align-items: center;
 				gap: 2.2rem;
-				background: linear-gradient(180deg, rgba(30,30,30,0.85) 0%, rgba(14,14,14,0.9) 100%);
+				/* softer, slightly purple-tinted panel to harmonize with bg.jpg */
+				background: linear-gradient(180deg, rgba(24,14,30,0.68) 0%, rgba(12,6,20,0.78) 100%);
 				padding: 2.8rem 3.2rem;
 				border-radius: 1.25rem;
-				box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+				box-shadow: 0 20px 60px rgba(6,4,10,0.75), inset 0 1px 0 rgba(255,255,255,0.02);
 				min-width: 320px;
 				width: min(88vw, 560px);
 			}
@@ -47,7 +48,8 @@
 				text-transform: none;
 				font-weight: 700;
 				color: transparent;
-				background: linear-gradient(90deg, #ffdfe0 0%, #ff9aa2 50%, #ff6b6b 100%);
+				/* lavender -> violet -> warm pink to match dusk tones */
+				background: linear-gradient(90deg, #f5d9ff 0%, #c798ff 55%, #ff9fb3 100%);
 				-webkit-background-clip: text;
 				background-clip: text;
 				-webkit-text-fill-color: transparent;
@@ -65,7 +67,7 @@
 				top: 50%;
 				transform: translateY(-50%);
 				font-size: 1.05rem;
-				color: rgba(255,120,120,0.12);
+				color: rgba(170,120,255,0.12);
 				opacity: 0.95;
 				filter: blur(0.2px);
 				pointer-events: none;
@@ -89,13 +91,14 @@
 			.clock {
 				font-size: 4.8rem;
 				letter-spacing: 0.06em;
-				background: linear-gradient(90deg, rgba(16,16,16,0.9) 0%, rgba(26,26,26,0.9) 100%);
+				/* deep translucent purple panel for clock to sit on */
+				background: linear-gradient(90deg, rgba(12,6,24,0.86) 0%, rgba(28,10,42,0.86) 100%);
 				padding: 1.15rem 2.2rem;
 				border-radius: 1rem;
-				box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 2px 0 rgba(255,255,255,0.01);
+				box-shadow: 0 30px 60px rgba(8,6,20,0.6), inset 0 2px 0 rgba(255,255,255,0.01);
 				user-select: none;
 				font-weight: 700;
-				text-shadow: 0 6px 28px rgba(0,0,0,0.7);
+				text-shadow: 0 6px 28px rgba(20,8,40,0.7);
 				transition: color 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
 			}
 			.labels {
@@ -136,22 +139,22 @@
 				text-align: center;
 			}
 			#chat-timer.green {
-				color: #b7ffb7;
-				background: linear-gradient(180deg, #052005 0%, #081108 100%);
-				box-shadow: 0 0 30px rgba(18,255,82,0.06), 0 6px 20px rgba(0,0,0,0.5);
+				color: #b7ffdd;
+				background: linear-gradient(180deg, #03363a 0%, #022827 100%);
+				box-shadow: 0 0 30px rgba(95,255,210,0.06), 0 6px 20px rgba(0,0,0,0.45);
 				transform: translateY(-2px);
 			}
 			#chat-timer.red {
-				color: #ff3b3b;
-				background: linear-gradient(180deg, #3a0f0f 0%, #220808 100%);
-				box-shadow: 0 0 40px rgba(255,59,59,0.12), 0 12px 30px rgba(0,0,0,0.6);
+				color: #ffd1d6;
+				background: linear-gradient(180deg, #4a0f2a 0%, #2a0816 100%);
+				box-shadow: 0 0 48px rgba(255,120,160,0.12), 0 12px 30px rgba(0,0,0,0.6);
 				transform: translateY(-3px);
 				animation: pulseRed 2s infinite ease-in-out;
 			}
 			.clock.red {
-				color: #ff6b6b;
-				background: linear-gradient(90deg, rgba(58,15,15,0.98) 0%, rgba(34,8,8,0.98) 100%);
-				box-shadow: 0 30px 80px rgba(255,80,80,0.06), inset 0 2px 0 rgba(255,255,255,0.02);
+				color: #ffd0d6;
+				background: linear-gradient(90deg, rgba(80,18,46,0.98) 0%, rgba(44,10,28,0.98) 100%);
+				box-shadow: 0 30px 100px rgba(255,120,180,0.08), inset 0 2px 0 rgba(255,255,255,0.02);
 				transform: translateY(-2px);
 				animation: pulseRed 2.2s infinite ease-in-out;
 			}
